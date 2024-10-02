@@ -25,18 +25,18 @@ def mse(W, dataset): # Wnx1 and Xmxn => W^T . X
     return cost / len(dataset)
 
 
-def forward(W):
+def grad(W, dataset:list[tuple]):
     
     global EPSILON # epsilon
     W_new = []
     for i in range(WEIGHTS_NO):
-        m2e = mse(W) # cost(w0, w1) : deviation from current weights
+        m2e = mse(W, dataset) # cost(w0, w1) : deviation from current weights
 
         # dw0 = mse(w0 + e, w1), dw1 = mse(w0, w1 + e)
         Wi = W[:i] + [W[i] + EPSILON] + W[i+1:]
 
         # dw_0 = (mse(w0 + e, w1) - m2e) / e
-        dw_i = (mse(Wi) - m2e) / EPSILON
+        dw_i = (mse(Wi, dataset) - m2e) / EPSILON
         W_new.append(W[i] - lr * dw_i)
     
     return W_new # minimization on the opposite direction of the gradient
@@ -45,9 +45,9 @@ def forward(W):
 def train(iters, training_set):
     W = [rnd.random() for _ in range(WEIGHTS_NO)] # start with a guess from 0-10
     for _ in range(iters):
-        m2e = mse(W) # error related to the weights
+        m2e = mse(W, training_set) # error related to the weights
         print(f'{W}       {m2e}')
-        W = forward(W)
+        W = grad(W, training_set)
     print('\n')
     return W, m2e
 
@@ -56,3 +56,4 @@ if __name__=="__main__":
 
     print('\tWEIGHTS\t\t\tERROR', '\n', '-*-'*20)
     W, m2e = train(iters=5000, training_set=X_train)
+    print(W)

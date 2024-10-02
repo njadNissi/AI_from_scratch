@@ -29,7 +29,7 @@ def mse(w, b, X=dataset):
     return cost / len(X)
 
 
-def forward(w, b):
+def grad(w, b):
     global EPSILON # epsilon
     m2e = mse(w, b)
     dw = (mse(w + EPSILON, b) - m2e) / EPSILON
@@ -43,7 +43,7 @@ def train(w0, b0, iters, X=dataset):
     for _ in range(iters):
         m2e = mse(w, b)
         print(f'{w}\t\t{b}\t\t{m2e}')
-        w, b = forward(w, b)
+        w, b = grad(w, b)
     
     return w, m2e
 

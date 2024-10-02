@@ -10,13 +10,18 @@ y_pred = w . x
 """
 
 import random as rnd
-import time as t
 
 # r = rnd.seed(t.CLOCK_REALTIME)
 EPSILON = .001 # epsilon
 lr = .001 # learning rate
+
 dataset = [
-    (0, 0),(1, 2), (2, 4), (3, 6), (4, 8), (5, 10)
+    (0, 0),
+    (1, 2),
+    (2, 4),
+    (3, 6),
+    (4, 8),
+    (5, 10)
 ]
 
 def mse(w, X):
@@ -28,24 +33,19 @@ def mse(w, X):
 
     return cost / len(X)
 
-# forward propagation: establish y_preds and cost
-def forward(w, X):
-	
-	return mse(w, X)
-
 # back propagation: check influence of error for each sample and optimize
-def backward(w):
+def grad(w):
     global EPSILON # epsilon
     dw = (mse(w + EPSILON) - mse(w)) / EPSILON 
     return w - lr * dw # minimization on the opposite direction of the gradient
 
 
-def fit(w0, iters, X=dataset):
+def train(w0, iters, X=dataset):
     w = w0
     for _ in range(iters):
         m2e = mse(w, X)
         print(f'{w}       {m2e}')
-        w = backward(w)
+        w = grad(w)
     
     return w, m2e
 
@@ -54,4 +54,4 @@ def fit(w0, iters, X=dataset):
 if __name__=="__main__":
     w = rnd.random() * 10 # start with a guess from 0-10
     print('\tWEIGHT\t\t\tERROR', '\n', '-*-'*15)
-    w, m2e = fit(w, 400)
+    w, m2e = train(w, 400)

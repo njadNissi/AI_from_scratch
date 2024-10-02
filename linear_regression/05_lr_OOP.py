@@ -1,6 +1,7 @@
 import random as rnd
 import math
 import sys
+import datasets_generator as datasets
 
 
 class LinearRegression():
@@ -76,71 +77,68 @@ class LinearRegression():
 				2 or ap: auto line printing
 				3 or fp: full printing
 		"""
-        self.X_train = training_dataset[:-1]
+        self.X_train = training_dataset[0]
         self.SAMPLES_NO = len(self.X_train)
         self.WEIGHTS_NO = len(self.X_train[0])
-        self.Y_train = training_dataset[-1]
+        self.Y_train = training_dataset[1]
 
         W = [rnd.random() for _ in range(self.WEIGHTS_NO)] # start with a guess from 0-10
         b = rnd.random() # start with a guess from 0-10
 
-        for i in range(iters):
+        try:
+            for i in range(iters):
 
-            m2e = self.mse(self.X_train, W, b) # error related to the weights
+                m2e = self.mse(self.X_train, W, b) # error related to the weights
 
-            if show_process == '3' or show_process == 'fp':
-                print(f'Rnd{i}>{W}\t{b}\t{m2e:.3f}')
-            elif show_process == '2' or show_process == 'ap':
-                print(f'Rnd{i}>{W}\t{b}\t{m2e:.3f}', end='\r')
-            elif show_process == '1' or show_process == 'yp':
-                input()
-                print(f'Rnd{i}>{W}\t{b}\t{m2e:.3f}', end='\r')
+                if show_process == '3' or show_process == 'fp':
+                    print(f'Rnd{i}>{W}\t{b}\t{m2e:.3f}')
+                elif show_process == '2' or show_process == 'ap':
+                    print(f'Rnd{i}>{W}\t{b}\t{m2e:.3f}', end='\r')
+                elif show_process == '1' or show_process == 'yp':
+                    input()
+                    print(f'Rnd{i}>{W}\t{b}\t{m2e:.3f}', end='\r')
 
+                W, b = self.forward(W, b)
+
+        except Exception as e:
+
+            print(e, "f{w:{W}}")
             
-            W, b = self.forward(W, b)
-
         return W, b, m2e
 
 
-    def predict(self, model:tuple, testing_set:list):# model = (Weights, Bias)
+    def predict(self, model:tuple, testing_set:tuple[list, list]):# model = (Weights, Bias)
         
-        self.X_test = testing_set        
-
-
         W, b = model
         m2e = 0
         Y_predicted = []
-        SIZE = len(testing_set)
+        self.X_test=testing_set[0]
+        self.Y_test = testing_set[1]
+        SIZE = len(self.X_test)
         
         for sample in range(SIZE):
 
-            x = self.X_test[sample] 
+            x = self.X_test[sample]
             y = sum(W[i] * x[i] for i in range(self.WEIGHTS_NO))
             Y_predicted.append(self.sigmoid(y + b))
-        
 
         return Y_predicted, m2e
-
 
 
 if __name__=="__main__":
 
     # example :OR gate
-    training_set = [
-        #w1 w2 y
-        (0, 0, 0),
-        (0, 1, 1),
-        (1, 0, 1),
-        (1, 1, 1)
-    ]
-
-    testing_set = [
-
-    ]
+    training_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=100)
+    testing_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=10)
 
     print('\tWEIGHTS\t\t\t\t\t\\t\tt\t\t\t\t\tERROR', '\n', '-*-'*35)
 
     AI = LinearRegression()
-    W, b, m2e = AI.train(training_set, iters=100*1000, show_process=sys.argv[1])
-    y = AI.predict(model=(W, b), testing_set=training_set)
-    for e in y: print(e)
+    W, b, m2e = AI.train(training_set, iters=1_000, show_process=sys.argv[2]) # [1]: -p (printing)
+    y_pred, b = AI.predict(model=(W, b), testing_set=testing_set)
+
+    size = len(y_pred)
+    y = testing_set[1]
+    print(f"Prediction for {size} samples with bias = {b} %")
+    for i in range(size): 
+        print(f"{testing_set[0][i]} => {y_pred[i]} vs {y[i]}")

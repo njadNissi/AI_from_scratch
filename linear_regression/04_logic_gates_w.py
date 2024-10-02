@@ -1,31 +1,15 @@
 
 import random as rnd
 import math
+import datasets_generator as datasets
 
 EPSILON = .001 # epsilon
 lr = .001 # learning rate
 WEIGHTS_NO = 2
 # example :OR gate
-X_train = [
-    #w1 w2 y
-    (0, 0, 0),
-    (0, 1, 1),
-    (1, 0, 1),
-    (1, 1, 1)
-]
+dataset = datasets.AND_dataset()
 
-X_test = [
-    (0, 0, 0, 0),
-    (0, 0, 1, 1),
-    (0, 1, 0, 1),
-    (0, 1, 1, 1),
-    (1, 0, 0, 1),
-    (1, 0, 1, 1),
-    (1, 1, 0, 1),
-    (1, 1, 1, 1)
-]
-
-def mse(W, dataset=X_train): # Wnx1 and Xmxn => W^T . X
+def mse(W, dataset:list[tuple]): # Wnx1 and Xmxn => W^T . X
     cost = 0
     for x in dataset:
         y = 0
@@ -37,18 +21,18 @@ def mse(W, dataset=X_train): # Wnx1 and Xmxn => W^T . X
     return cost / len(dataset)
 
 
-def forward(W):
+def grad(W, dataset:list[tuple]):
     
     global EPSILON # epsilon
     W_new = []
     for i in range(WEIGHTS_NO):
-        m2e = mse(W) # cost(w0, w1) : deviation from current weights
+        m2e = mse(W, dataset) # cost(w0, w1) : deviation from current weights
 
         # dw0 = mse(w0 + e, w1), dw1 = mse(w0, w1 + e)
         Wi = W[:i] + [W[i] + EPSILON] + W[i+1:]
 
         # dw_0 = (mse(w0 + e, w1) - m2e) / e
-        dw_i = (mse(Wi) - m2e) / EPSILON
+        dw_i = (mse(Wi, dataset) - m2e) / EPSILON
         W_new.append(W[i] - lr * dw_i)
     
     return W_new # minimization on the opposite direction of the gradient
@@ -63,14 +47,14 @@ def sigmoid(x):
     return 1.0 / (1.0 + math.exp(-x))
 
 
-def train(iters):
+def train(iters, dataset:list[tuple]):
 
     W = [rnd.random() for _ in range(WEIGHTS_NO)] # start with a guess from 0-10
 
     for _ in range(iters):
-        m2e = mse(W) # error related to the weights
+        m2e = mse(W, dataset) # error related to the weights
         print(f'{W}       {m2e}')
-        W = forward(W)
+        W = grad(W, dataset)
     print('\n')
     return W, m2e
 
@@ -88,12 +72,11 @@ def predict(model, testing_set=None):# model = (Weights, Biases)
     return Y_predicted
 
 
-
 if __name__=="__main__":
 
     print('\tWEIGHTS\t\t\tERROR', '\n', '-*-'*20)
 
-    W, m2e = train(iters=10* 1000)
+    W, m2e = train(iters=10_000, dataset=dataset)
 
-    y = predict(model=W, testing_set=X_test)
+    y = predict(model=W, testing_set=dataset)
     print(y)
