@@ -4,10 +4,10 @@ import pandas as pd
 from datetime import datetime
 
 # Load the models from the pickle files
-with open('ac_temperature_model.pkl', 'rb') as temp_model_file:
-    regressor = pickle.load(temp_model_file)
+with open('artifacts/ac_temperature_model.pkl', 'rb') as ac_model_file:
+    regressor = pickle.load(ac_model_file)
 
-with open('light_on_off_model.pkl', 'rb') as light_model_file:
+with open('artifacts/light_on_off_model.pkl', 'rb') as light_model_file:
     classifier = pickle.load(light_model_file)
 
 # Define the feature names for the input data
@@ -33,6 +33,7 @@ def get_user_input():
     day_of_week = current_time.weekday()  # Monday=0, Sunday=6
 
     return pd.DataFrame([[outside_temp, room_temp, occupancy, hour, day_of_week]], columns=feature_names)
+
 
 def predict_ac_and_light(features):
     # Predict the AC temperature

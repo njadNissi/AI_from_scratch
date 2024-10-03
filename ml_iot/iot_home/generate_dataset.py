@@ -41,5 +41,5 @@ df['ac_temperature'].ffill(inplace=True)
 print(df.tail(10))
 
 # Save to CSV
-df.to_csv('synthetic_ac_light_data.csv', index=False)
+df.to_csv('artifacts/synthetic_ac_light_data.csv', index=False)
 
