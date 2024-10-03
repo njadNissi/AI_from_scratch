@@ -9,6 +9,15 @@ def OR_dataset():
         (1, 1, 1)
     ])
 
+def NOR_dataset():
+    return Xy_separate([
+        #w1 w2 y
+        (0, 0, 1),
+        (0, 1, 0),
+        (1, 0, 0),
+        (1, 1, 0)
+    ])
+
 def AND_dataset():
     return Xy_separate([
         (0, 0, 0),
