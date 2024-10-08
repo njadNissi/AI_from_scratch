@@ -1,9 +1,18 @@
+"""
+    A HMI for IoT devices an AC and a lamp
+    Author: Ndombasi Diakusala Joao Andre
+    Date: October 3rd, 2024
+"""
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 import queue
 from PIL import Image, ImageTk
 import time
+import serial
+import random as rd
+from threading import Thread
+
 
 class Window():
 
@@ -114,18 +123,36 @@ class Window():
         self.show_images(states=(1, 25, 1))
 
 
+
 def get_data(out_buffer:queue.Queue): 
-        for i in range(10_000):
+        for i in range(1_000):
             QUEUE.put(("Andre", (rd.randint(0,1), rd.randint(-50, 50), rd.randint(0,1))))
             time.sleep(1)
+
+
+def udp_data(out_buffer:queue.Queue):
+    """
+        udp data => (input, output)
+        input  = [SENSOR, outside_temp, room_temp, occupancy@hour]
+        output = (ac_state, ac_value, led_state) 
+    """
+    port = '/dev/ttyUSB0'
+    br =  9600
+
+    print(f"Raeading FROM : port={port}, Baud-Rate={br}")
+
+    ser = serial.Serial(port, br)
+
+    while True:
+        data = str(ser.readline(), 'utf-8').strip('/n/r')
+        data = data.split(',')
+        states = [data[0]] + [int(v) for v in data[1:]]
+        out_buffer.put(states)
   
             
 if __name__=="__main__":
     
     app = Window(size="1000x700", title="Smart-IoT-Home")
-
-    import random as rd
-    from threading import Thread
    
     QUEUE = queue.Queue() 
         

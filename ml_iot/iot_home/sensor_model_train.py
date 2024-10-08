@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.metrics import mean_squared_error, accuracy_score
+from sklearn.metrics import root_mean_squared_error, accuracy_score
 import pickle
 
 
@@ -43,7 +43,7 @@ y_temp_pred = regressor.predict(X_test)
 y_light_pred = classifier.predict(X_test)
 
 # Evaluate the models
-mse_temp = mean_squared_error(y_temp_test, y_temp_pred)
+mse_temp = root_mean_squared_error(y_temp_test, y_temp_pred)
 accuracy_light = accuracy_score(y_light_test, y_light_pred)
 
 print(f'AC Temperature Prediction MSE: {mse_temp:.2f}')

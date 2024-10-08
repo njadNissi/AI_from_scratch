@@ -1,13 +1,13 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from everywhereml.sklearn.ensemble import RandomForestClassifier
+# from everywhereml.sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from everywhereml.everywhereml.sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import mean_squared_error, accuracy_score
 import pickle
 
 
 # Load the synthetic dataset
-df = pd.read_csv('synthetic_ac_light_data.csv')
+df = pd.read_csv('artifacts/synthetic_ac_light_data.csv')
 
 # Check for missing values in target columns (ac_temperature and light_on)
 print("Checking for missing values...")
@@ -51,14 +51,18 @@ print(f'AC Temperature Prediction MSE: {mse_temp:.2f}')
 print(f'Light On/Off Prediction Accuracy: {accuracy_light:.2%}')
 
 # Save the models using pickle
-with open('ac_temperature_model.pkl', 'wb') as temp_model_file:
+with open('artifacts/ac_temperature_model.pkl', 'wb') as temp_model_file:
     pickle.dump(regressor, temp_model_file)
 
-with open('light_on_off_model.pkl', 'wb') as light_model_file:
+
+with open('artifacts/light_on_off_model.pkl', 'wb') as light_model_file:
     pickle.dump(classifier, light_model_file)
 
 
-with open('lightStatusPredictor.h', 'w') as f:
+with open('artifacts/lightStatusPredictor.h', 'w') as f:
   f.write(classifier.to_arduino(instance_name='lightStatusPredictor'))
 
+
+with open('artifacts/ACTempPredictor.h', 'w') as f:
+  f.write(regressor.to_arduino(instance_name='ACTempPredictor'))
 print("Models saved successfully.")
