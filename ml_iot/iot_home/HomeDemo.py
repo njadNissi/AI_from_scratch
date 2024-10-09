@@ -45,7 +45,7 @@ class Window():
 
         
         # Create button
-        self.change_button = tk.Button(self.root, text="Change Image", command=self.change_image)
+        self.change_button = tk.Button(self.root, text="Light Switch", command=self.change_image)
         self.change_button.grid(row=0, column=1)
 
         # style
@@ -55,7 +55,7 @@ class Window():
         style.configure("TreeView.heading", background="lightgray", foreground="black")
 
         # treeview
-        col_names = ("SENSOR", "outside_temp", "room_temp", "occupancy/hour")
+        col_names = ("Timestamp", "occupancy", "room temp", "out temp")
         for i in range(len(col_names)):
             self.tree.column("#" + str(i), anchor=CENTER)
             self.tree.heading("#" + str(i), text=col_names[i])
@@ -79,12 +79,12 @@ class Window():
         """
         while True:
             try:
-                values = input_buffer.get(timeout=1)
-                user, values = values
+                values = input_buffer.get(timeout=1) # day_hour, occupancy, ac_temp, light_on
+                
                 print(values)
                 try:
-                    self.show_images(states=values)
-                    self.tree.insert("", 0, values=values, text=user)
+                    self.show_images(states=values[1:4]) # 1, 2, 3
+                    self.tree.insert("", 0, values=values[1:2]+values[-2:], text=values[0])
                 except IndexError:
                     print('Index Error')
                 
@@ -125,10 +125,44 @@ class Window():
 
 
 def get_data(out_buffer:queue.Queue): 
-        for i in range(1_000):
-            QUEUE.put(("Andre", (rd.randint(0,1), rd.randint(-50, 50), rd.randint(0,1))))
-            time.sleep(1)
+    for i in range(1_000):
+        QUEUE.put(("Andre", (rd.randint(0,1), rd.randint(-50, 50), rd.randint(0,1))))
+        time.sleep(1)
 
+
+def AI(out_buffer:queue.Queue): 
+    import pickle
+    import numpy as np
+    import pandas as pd
+    from datetime import datetime
+
+    regressor = None
+    classifier = None
+    # Load the models from the pickle files
+    with open('artifacts/ac_temperature_model.pkl', 'rb') as ac_model_file:
+        regressor = pickle.load(ac_model_file)
+
+    with open('artifacts/light_on_off_model.pkl', 'rb') as light_model_file:
+        classifier = pickle.load(light_model_file)
+
+    # Define the feature names for the input data
+    feature_names = ['outside_temperature', 'room_temperature', 'occupancy', 'hour', 'day_of_week']
+    days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    while True:
+        # Input collection
+        out_temp       = rd.randint(-50, 50)
+        room_temp      = rd.randint(-50, 50)
+        occupancy      = rd.randint(0, 1)
+        hour           = rd.randint(0, 23)
+        day_of_week    = np.random.choice([day for day in range(7)])
+        features       = pd.DataFrame([[out_temp, room_temp, occupancy, hour, day_of_week]], columns=feature_names)
+        # Predictions
+        ac_temp        = int(regressor.predict(features)[0])
+        light_on       = classifier.predict(features)[0]
+        # QUEUE.put(("Andre", (rd.randint(0,1), rd.randint(-50, 50), rd.randint(0,1)))) # MANUAL DATA
+        QUEUE.put((f"{days[day_of_week]} {hour}h", bool(occupancy), f"{ac_temp} °C", light_on, f"{room_temp} °C", f"{out_temp} °C")) # MANUAL DATA
+        time.sleep(1)
+            
 
 def udp_data(out_buffer:queue.Queue):
     """
@@ -139,7 +173,7 @@ def udp_data(out_buffer:queue.Queue):
     port = '/dev/ttyUSB0'
     br =  9600
 
-    print(f"Raeading FROM : port={port}, Baud-Rate={br}")
+    print(f"Reading FROM : port={port}, Baud-Rate={br}")
 
     ser = serial.Serial(port, br)
 
@@ -156,6 +190,6 @@ if __name__=="__main__":
    
     QUEUE = queue.Queue() 
         
-    Thread(target=get_data, args=(QUEUE,), daemon=True).start()
+    Thread(target=AI, args=(QUEUE,), daemon=True).start()
     Thread(target=app.update_cmds, args=(QUEUE,), daemon=True).start()
     app.showGUI()

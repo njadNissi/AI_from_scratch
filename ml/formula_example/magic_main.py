@@ -5,6 +5,10 @@ import pickle
 model = None
 with open("artifacts/magicMathsModel.pkl", "rb") as file:  # Open in binary read mode
     model = pickle.load(file)
+    # Print weights and bias
+    print("Weights:", model.coef_)
+    print("Bias:", model.intercept_)
+
 
 
 if __name__=='__main__':

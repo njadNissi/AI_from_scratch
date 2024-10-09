@@ -16,8 +16,8 @@ feature_names = ['outside_temperature', 'room_temperature', 'occupancy', 'hour',
 # Function to get input from the user and make predictions
 def get_user_input():
     print("Enter the following details:")
-    outside_temp = float(input("Outside Temperature (°C): "))
-    room_temp = float(input("Room Temperature (°C): "))
+    outside_temp = int(input("Outside Temperature (°C): "))
+    room_temp = int(input("Room Temperature (°C): "))
     occupancy = int(input("Room Occupied (1 for Yes, 0 for No): "))
 
     # Get current time or user input for time
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     ac_temp, light_on = predict_ac_and_light(features)
 
     if occupancy == 1: # if room occupied
-        print(f"\nPredicted AC Temperature: {ac_temp:.2f} °C")
+        print(f"\nPredicted AC Temperature: {ac_temp} °C")
         if light_on == 1:
             print("Light Status: ON")
         else:

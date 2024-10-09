@@ -15,10 +15,10 @@ timestamps = [start_date + timedelta(hours=i) for i in range(n_samples)]
 
 # Generate synthetic data
 np.random.seed(42)
-outside_temperature = np.random.normal(20, 10, n_samples)  # Simulating outside temp
+outside_temperature = np.round(np.random.normal(20, 10, n_samples)).astype(int)  # Simulating outside temp
 occupancy = np.random.choice([0, 1], n_samples, p=[0.7, 0.3])  # 70% unoccupied, 30% occupied
-ac_temperature = np.where(occupancy == 1, np.random.normal(22, 2, n_samples), np.nan)  # Set temp if occupied
-room_temperature = outside_temperature + np.random.normal(2, 1, n_samples)  # Simulate room temp
+ac_temperature = np.where(occupancy == 1, np.round(np.random.normal(22, 2, n_samples)).astype(int), np.nan)  # Set temp if occupied
+room_temperature = outside_temperature + np.round(np.random.normal(2, 1, n_samples)).astype(int)  # Simulate room temp
 
 # Light status based on occupancy and time of day
 light_on = np.where((occupancy == 1) & ((np.array([d.hour for d in timestamps]) < 6) |
