@@ -1,6 +1,6 @@
 # AI from scratch
 
-This repo is created to give a solid a foundation on AI model Development with machine Learning techniques, Design and Implementation. Above that, It introduces the concept of tinyML and Edge Computing. The idea of leveraging AI predictions for smart IoT devices and varied applications on ebedded systems such as smartphones, microcontrollers, microcomputers, and edge devices. Deploying a model is as important as training one, but MCUs have limited computing resources, thus the need of tinyML and Quantization techniques to fit the model on the hardware.
+This repo is created to give solid a foundation on AI model Development with machine Learning techniques, Implementation and Deployment on Edge Devices and Embedded Systems. Above that, It introduces the concept of tinyML and Edge Computing. The idea of leveraging AI predictions for smart IoT devices and varied applications on ebedded systems such as smartphones, microcontrollers, microcomputers, and edge devices. Deploying a model is as important as training one, but MCUs have limited computing resources, thus the need of tinyML and Quantization techniques to fit the model on the hardware.
 
 ## Structure:
 
