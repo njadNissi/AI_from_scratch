@@ -46,7 +46,7 @@ def linear_dataset(w:list[float], b, size:int) -> tuple[list, list]:
         xi = []
         yi = 0
         for  v in w: # generate feature value
-            xij = rd.randint(-25, 25)
+            xij = rd.randint(-10, 10)
             xi.append(xij)
             yi += v * xij
         xi.append(yi + b)

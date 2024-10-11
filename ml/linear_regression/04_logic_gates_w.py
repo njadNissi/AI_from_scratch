@@ -79,7 +79,10 @@ if __name__=="__main__":
 
     print('\tWEIGHTS\t\t\tERROR', '\n', '-*-'*20)
 
-    W, m2e = train(iters=10_000)
-
+    W, m2e = train(iters=500000)
     y = predict(model=W, testing_set=dataset)
-    print(y)
+    
+    print(f"Real y: {dataset[1]}")
+    print(f"Pred y: {y} with MSE = {m2e}")
+    y = [x>.5 for x in y]
+    print(f"Pred y: {y} with MSE = {m2e}")

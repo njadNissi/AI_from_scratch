@@ -1,11 +1,11 @@
-
+import math
 import random as rnd
 
 EPSILON = .001
 lr = .001
 WEIGHTS_NO = 2
 # example :OR gate
-X_train = [
+dataset = [
     #w1 w2 y
     (0, 0, 0),
     (0, 1, 1),
@@ -51,9 +51,35 @@ def train(iters, training_set):
     print('\n')
     return W, m2e
 
+def sigmoid(x):
+    """
+        No matter the twiking of w1, w2 and bias we won't achieve the perfect learning.
+        that's where activation functions comes in handy. 
+        sigmoid function gives 0 for w <=0, and 1 elsewise;
+    """
+    return 1.0 / (1.0 + math.exp(-x))
+
+
+def predict(model:list[float], test_set:list[tuple]):# model = (Weights, Biases)
+
+    Y_predicted = []
+    for x in test_set:
+        y_row = 0
+        for i in range(WEIGHTS_NO):
+            y_row += model[i] * x[i]
+        
+        Y_predicted.append(sigmoid(y_row))
+    
+    return Y_predicted
+
 
 if __name__=="__main__":
 
     print('\tWEIGHTS\t\t\tERROR', '\n', '-*-'*20)
-    W, m2e = train(iters=5000, training_set=X_train)
-    print(W)
+    w, m2e = train(iters=5000, training_set=dataset)
+    y = predict(model=w, test_set=dataset)
+
+    print(f"Weights: {w}")
+    print(f"Pred y: {y} with MSE = {m2e}")
+    y = [x>.5 for x in y]
+    print(f"Pred y: {y} with MSE = {m2e}")

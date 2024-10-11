@@ -130,8 +130,8 @@ if __name__=="__main__":
     try:
         epochs  = int(sys.argv[1]) # 1000
         verbose = sys.argv[2]
-        training_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=100)
-        testing_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=10)
+        training_set = datasets.linear_dataset(w=(.5, -1), b=0, size=5_000)
+        testing_set = datasets.linear_dataset(w=(.5, -1), b=0, size=10)
 
         print('\tWEIGHTS\t\t\t\t\t\\t\tt\t\t\t\t\tERROR', '\n', '-*-'*35)
 
@@ -141,7 +141,7 @@ if __name__=="__main__":
 
         size = len(y_pred)
         y = testing_set[1]
-        print(f"Prediction for {size} samples with bias = {b} %")
+        print(f"Prediction for {size} samples with bias = {b}")
         for i in range(size): 
             print(f"{testing_set[0][i]} => {y_pred[i]} vs {y[i]}")
             

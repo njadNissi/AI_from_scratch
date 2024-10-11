@@ -178,7 +178,7 @@ if __name__=="__main__":
     # model 
     model = MLP(randomize=True)
     model.checkParams()
-    model.fit(dataset=datasets.AND_dataset())
+    model.fit(dataset=datasets.XOR_dataset())
     model.train(iters=100_000, lr=.1, eps=.1)
    
     print("==================== TEST =======================")
