@@ -14,9 +14,10 @@ import random as rd
 from threading import Thread
 
 
-class Window():
+class IoTHomeWindow():
 
     def __init__(self, title:str, size:str) -> None:
+        self.Running = False
         self.title = title
         self.size = size
         self.root = tk.Tk()
@@ -45,7 +46,7 @@ class Window():
 
         
         # Create button
-        self.change_button = tk.Button(self.root, text="Light Switch", command=self.change_image)
+        self.change_button = tk.Button(self.root, text="Play", command=self.toggle_simu)
         self.change_button.grid(row=0, column=1)
 
         # style
@@ -81,7 +82,6 @@ class Window():
             try:
                 values = input_buffer.get(timeout=1) # day_hour, occupancy, ac_temp, light_on
                 
-                print(values)
                 try:
                     self.show_images(states=values[1:4]) # 1, 2, 3
                     self.tree.insert("", 0, values=values[1:2]+values[-2:], text=values[0])
@@ -119,77 +119,44 @@ class Window():
         self.led_label.grid(row=1, column=1)
 
  
-    def change_image(self):
-        self.show_images(states=(1, 25, 1))
+    def toggle_simu(self):
+
+        self.Running = not self.Running
+        self.change_button.config(text="Pause" if self.Running else "Play")
 
 
 
-def get_data(out_buffer:queue.Queue): 
-    for i in range(1_000):
-        QUEUE.put(("Andre", (rd.randint(0,1), rd.randint(-50, 50), rd.randint(0,1))))
-        time.sleep(1)
-
-
-def AI(out_buffer:queue.Queue): 
-    import pickle
-    import numpy as np
-    import pandas as pd
-    from datetime import datetime
-
-    regressor = None
-    classifier = None
-    # Load the models from the pickle files
-    with open('artifacts/ac_temperature_model.pkl', 'rb') as ac_model_file:
-        regressor = pickle.load(ac_model_file)
-
-    with open('artifacts/light_on_off_model.pkl', 'rb') as light_model_file:
-        classifier = pickle.load(light_model_file)
-
-    # Define the feature names for the input data
-    feature_names = ['outside_temperature', 'room_temperature', 'occupancy', 'hour', 'day_of_week']
-    days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+# features: 'outside_temperature', 'room_temperature', 'occupancy', 'hour', 'day_of_week'
+days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+def stupid_data(app:IoTHomeWindow, out_buffer:queue.Queue): 
     while True:
-        # Input collection
-        out_temp       = rd.randint(-50, 50)
-        room_temp      = rd.randint(-50, 50)
-        occupancy      = rd.randint(0, 1)
-        hour           = rd.randint(0, 23)
-        day_of_week    = np.random.choice([day for day in range(7)])
-        features       = pd.DataFrame([[out_temp, room_temp, occupancy, hour, day_of_week]], columns=feature_names)
-        # Predictions
-        ac_temp        = int(regressor.predict(features)[0])
-        light_on       = classifier.predict(features)[0]
-        # QUEUE.put(("Andre", (rd.randint(0,1), rd.randint(-50, 50), rd.randint(0,1)))) # MANUAL DATA
-        QUEUE.put((f"{days[day_of_week]} {hour}h", bool(occupancy), f"{ac_temp} °C", light_on, f"{room_temp} °C", f"{out_temp} °C")) # MANUAL DATA
-        time.sleep(1)
-            
+        if app.Running:
+            day_of_week = rd.randint(0, 6)
+            hour = rd.randint(0, 23)
+            occupancy = rd.randint(0,1)
+            ac_temp = rd.randint(-50, 50)
+            light_on = rd.randint(0,1)
+            room_temp = rd.randint(-50, 50)
+            out_temp = rd.randint(-50, 50)
+            values = (
+                        f"{days[day_of_week]} {hour}h",
+                        bool(occupancy),
+                        f"{ac_temp} °C",
+                        light_on,
+                        f"{room_temp} °C",
+                        f"{out_temp} °C"
+                    )
+            QUEUE.put(values)
+            print(values)
+            time.sleep(1)
 
-def udp_data(out_buffer:queue.Queue):
-    """
-        udp data => (input, output)
-        input  = [SENSOR, outside_temp, room_temp, occupancy@hour]
-        output = (ac_state, ac_value, led_state) 
-    """
-    port = '/dev/ttyUSB0'
-    br =  9600
 
-    print(f"Reading FROM : port={port}, Baud-Rate={br}")
-
-    ser = serial.Serial(port, br)
-
-    while True:
-        data = str(ser.readline(), 'utf-8').strip('/n/r')
-        data = data.split(',')
-        states = [data[0]] + [int(v) for v in data[1:]]
-        out_buffer.put(states)
-  
-            
 if __name__=="__main__":
     
-    app = Window(size="1000x700", title="Smart-IoT-Home")
+    app = IoTHomeWindow(size="1000x700", title="Smart-IoT-Home")
    
     QUEUE = queue.Queue() 
         
-    Thread(target=AI, args=(QUEUE,), daemon=True).start()
+    Thread(target=stupid_data, args=(app, QUEUE), daemon=True).start()
     Thread(target=app.update_cmds, args=(QUEUE,), daemon=True).start()
     app.showGUI()
