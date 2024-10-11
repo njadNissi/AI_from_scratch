@@ -24,7 +24,7 @@ dataset = [
     (5, 10)
 ]
 
-def mse(w, X):
+def mse(w, X=dataset):
     cost = 0
     for x in X:
         y_pred = x[0] * w

@@ -126,19 +126,30 @@ class LinearRegression():
 
 
 if __name__=="__main__":
+    
+    try:
+        epochs  = int(sys.argv[1]) # 1000
+        verbose = sys.argv[2]
+        training_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=100)
+        testing_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=10)
 
-    # example :OR gate
-    training_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=100)
-    testing_set = datasets.linear_dataset(w=(.5, -3, 1), b=0, size=10)
+        print('\tWEIGHTS\t\t\t\t\t\\t\tt\t\t\t\t\tERROR', '\n', '-*-'*35)
 
-    print('\tWEIGHTS\t\t\t\t\t\\t\tt\t\t\t\t\tERROR', '\n', '-*-'*35)
+        AI = LinearRegression()
+        W, b, m2e = AI.train(training_set, iters=epochs, show_process=verbose) # [1]: -p (printing)
+        y_pred, b = AI.predict(model=(W, b), testing_set=testing_set)
 
-    AI = LinearRegression()
-    W, b, m2e = AI.train(training_set, iters=1_000, show_process=sys.argv[2]) # [1]: -p (printing)
-    y_pred, b = AI.predict(model=(W, b), testing_set=testing_set)
-
-    size = len(y_pred)
-    y = testing_set[1]
-    print(f"Prediction for {size} samples with bias = {b} %")
-    for i in range(size): 
-        print(f"{testing_set[0][i]} => {y_pred[i]} vs {y[i]}")
+        size = len(y_pred)
+        y = testing_set[1]
+        print(f"Prediction for {size} samples with bias = {b} %")
+        for i in range(size): 
+            print(f"{testing_set[0][i]} => {y_pred[i]} vs {y[i]}")
+            
+    except Exception as e:
+        
+        print("Run command: ===> python 05_lr_OOP.py [iterations or epochs] [verbose level]")
+        print("verbose defines the amount of details in the training process:")
+        print("\t0 or np: No printing")
+        print("\t1 or yp: yield line printing")
+        print("\t2 or ap: auto single line printing")
+        print("\t3 or fp: full printing")
