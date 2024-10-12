@@ -5,7 +5,7 @@ from sklearn.metrics import root_mean_squared_error as mse
 import pickle
 
 # Load your dataset
-data = pd.read_csv('artifacts/mathsMagicRegressor.csv')
+data = pd.read_csv('artifacts/mathsMagicData.csv')
 
 # Prepare features and target variable
 y = data['y']  # Replace with your features

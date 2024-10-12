@@ -179,7 +179,7 @@ if __name__=="__main__":
     model = MLP(randomize=True)
     model.checkParams()
     model.fit(dataset=datasets.XOR_dataset())
-    model.train(iters=100_000, lr=.1, eps=.1)
+    model.train(iters=500_000, lr=.001, eps=.001)
    
     print("==================== TEST =======================")
     for i in range(2):

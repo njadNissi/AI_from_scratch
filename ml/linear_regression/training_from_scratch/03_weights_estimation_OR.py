@@ -72,6 +72,8 @@ def predict(model:list[float], test_set:list[tuple]):# model = (Weights, Biases)
     
     return Y_predicted
 
+activation = lambda x:  x > .5
+
 
 if __name__=="__main__":
 
@@ -79,7 +81,9 @@ if __name__=="__main__":
     w, m2e = train(iters=5000, training_set=dataset)
     y = predict(model=w, test_set=dataset)
 
-    print(f"Weights: {w}")
-    print(f"Pred y: {y} with MSE = {m2e}")
-    y = [x>.5 for x in y]
-    print(f"Pred y: {y} with MSE = {m2e}")
+    print("Training Results", "\n", "-*-"*20)
+    print(f"Weights: {w} with MSE = {m2e}")
+    print("Truth Table:", '\n', '-*-'*20)
+    for i in range(len(dataset)):
+        x = dataset[i]
+        print(f"{x[0]} | {x[1]} | {activation(y[i])}", '\n', '-'*12)

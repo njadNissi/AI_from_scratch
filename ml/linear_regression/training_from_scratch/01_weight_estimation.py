@@ -15,7 +15,8 @@ import random as rnd
 EPSILON = .001 # epsilon
 lr = .001 # learning rate
 
-dataset = [
+# dataset1 : y = 2x ===> iters=400
+dataset1 = [
     (0, 0),
     (1, 2),
     (2, 4),
@@ -23,6 +24,18 @@ dataset = [
     (4, 8),
     (5, 10)
 ]
+
+# dataset2 : y = -2x ===> iters=1000
+dataset2 = [
+    (0, 0),
+    (1, -2),
+    (2, -4),
+    (3, -6),
+    (4, -8),
+    (5, -10)
+]
+
+dataset = dataset2
 
 def mse(w, X=dataset):
     cost = 0
@@ -50,8 +63,11 @@ def train(w0, iters, X=dataset):
     return w, m2e
 
 
+activation = lambda x: round(x)
 
 if __name__=="__main__":
     w = rnd.random() * 10 # start with a guess from 0-10
     print('\tWEIGHT\t\t\tERROR', '\n', '-*-'*15)
-    w, m2e = train(w, 400)
+    w, m2e = train(w0=w, iters=500)
+    w = activation(w)
+    print(f"Prediction: w={w} with mse={m2e}")

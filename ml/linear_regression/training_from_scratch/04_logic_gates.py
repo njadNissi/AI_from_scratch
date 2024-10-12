@@ -23,21 +23,21 @@ def mse(W, dataset:list[tuple]=dataset): # Wnx1 and Xmxn => W^T . X
     return cost / len(dataset)
 
 
-def grad(W, dataset:list[tuple]=dataset):
+def grad(w, dataset:list[tuple]=dataset):
     
     global EPSILON # epsilon
-    W_new = []
+    w_new = []
     for i in range(WEIGHTS_NO):
-        m2e = mse(W) # cost(w0, w1) : deviation from current weights
+        m2e = mse(w) # cost(w0, w1) : deviation from current weights
 
         # dw0 = mse(w0 + e, w1), dw1 = mse(w0, w1 + e)
-        Wi = W[:i] + [W[i] + EPSILON] + W[i+1:]
+        Wi = w[:i] + [w[i] + EPSILON] + w[i+1:]
 
         # dw_0 = (mse(w0 + e, w1) - m2e) / e
         dw_i = (mse(Wi) - m2e) / EPSILON
-        W_new.append(W[i] - lr * dw_i)
+        w_new.append(w[i] - lr * dw_i)
     
-    return W_new # minimization on the opposite direction of the gradient
+    return w_new # minimization on the opposite direction of the gradient
 
 
 def sigmoid(x):
@@ -51,14 +51,14 @@ def sigmoid(x):
 
 def train(iters):
 
-    W = [rnd.random() for _ in range(WEIGHTS_NO)] # start with a guess from 0-10
+    w = [rnd.random() for _ in range(WEIGHTS_NO)] # start with a guess from 0-10
 
     for _ in range(iters):
-        m2e = mse(W) # error related to the weights
-        print(f'{W}       {m2e}')
-        W = grad(W)
+        m2e = mse(w) # error related to the weights
+        print(f'{w}       {m2e}')
+        w = grad(w)
     print('\n')
-    return W, m2e
+    return w, m2e
 
 
 def predict(model, testing_set:list[tuple]):# model = (Weights, Biases)
@@ -79,10 +79,13 @@ if __name__=="__main__":
 
     print('\tWEIGHTS\t\t\tERROR', '\n', '-*-'*20)
 
-    W, m2e = train(iters=500000)
-    y = predict(model=W, testing_set=dataset)
+    w, m2e = train(iters=500000)
+    y = predict(model=w, testing_set=dataset)
     
-    print(f"Real y: {dataset[1]}")
-    print(f"Pred y: {y} with MSE = {m2e}")
-    y = [x>.5 for x in y]
-    print(f"Pred y: {y} with MSE = {m2e}")
+    print("Training Results", "\n", "-*-"*20)
+    print(f"Weights: {w} with MSE = {m2e}")
+    print("Truth Table:", '\n', '-*-'*20)
+    X_test = dataset[0]
+    for i in range(len(X_test)):
+        x = X_test[i]
+        print(f"{x[0]} | {x[1]} | {bool(y[i])}", '\n', '-'*12) 

@@ -5,7 +5,7 @@ from sklearn.metrics import root_mean_squared_error as mse
 import pickle
 
 # Load your dataset
-data = pd.read_csv('artifacts/3fFormulaModel.csv')
+data = pd.read_csv('artifacts/nfFormulaData.csv')
 
 # Prepare features and target variable
 y = data['y']  # Replace with your features
@@ -32,6 +32,6 @@ print(predictions)
 
 
 # Open a file in write binary mode ('wb') for saving the model
-with open('artifacts/3fFormulaModel.pkl', 'wb') as f:
+with open('artifacts/nfFormulaModel.pkl', 'wb') as f:
   # Use pickle.dump to serialize the model and write it to the file
   pickle.dump(model, f)
