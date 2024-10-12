@@ -7,7 +7,8 @@ inputs = [
 ] # 3X4 # sample
 
 weights = [
-    [0.2, 0.8, -0.5, 1.0], # neuron1
+    #neurons
+    [0.2, 0.8, -0.5, 1.0], # layers
     [0.5, -0.91, 0.26, -0.5], # neuron2
     [-0.26, -0.27, 0.17, 0.87] # neuron3
 ] # 3X4

@@ -14,9 +14,9 @@ class LinearRegression():
         self.SAMPLES_NO = 0
         self.WEIGHTS_NO = 0
         self.X_train = []
-        self.Y_train = []
+        self.y_train = []
         self.X_test = []
-        self.Y_test = []
+        self.y_test = []
         self.WEIGTHS = []
 
 
@@ -30,7 +30,7 @@ class LinearRegression():
             y = sum(W[i] * x[i] for i in range(self.WEIGHTS_NO)) + bias
  
  			# the y value is either 0 or 1 bcz of sigmoid
-            error = (self.Y_train[sample] - self.sigmoid(y + bias)) **2
+            error = (self.y_train[sample] - self.sigmoid(y + bias)) **2
             cost += error
 
         return cost / self.SAMPLES_NO
@@ -80,7 +80,7 @@ class LinearRegression():
         self.X_train = training_dataset[0]
         self.SAMPLES_NO = len(self.X_train)
         self.WEIGHTS_NO = len(self.X_train[0])
-        self.Y_train = training_dataset[1]
+        self.y_train = training_dataset[1]
 
         W = [rnd.random() for _ in range(self.WEIGHTS_NO)] # start with a guess from 0-10
         b = rnd.random() # start with a guess from 0-10
@@ -113,7 +113,7 @@ class LinearRegression():
         m2e = 0
         Y_predicted = []
         self.X_test=testing_set[0]
-        self.Y_test = testing_set[1]
+        self.y_test = testing_set[1]
         SIZE = len(self.X_test)
         
         for sample in range(SIZE):

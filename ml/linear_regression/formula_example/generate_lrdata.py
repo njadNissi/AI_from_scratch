@@ -27,7 +27,7 @@ def nfeatures(features:int):
     dataset = pd.concat([X, y], axis=1)
     print(dataset.head())
 
-    dataset.to_csv('3fFormulaRegressor.csv', index=False)
+    dataset.to_csv('artifacts/3fFormulaRegressor.csv', index=False)
 
 
 def maths_magic(digits:int):
@@ -41,10 +41,9 @@ def maths_magic(digits:int):
     y = pd.DataFrame({'y': y})
     dataset = pd.concat([X, y], axis=1)
     print(dataset.head())
-    dataset.to_csv('mathsMagicRegressor.csv', index=False)
+    dataset.to_csv('artifacts/mathsMagicRegressor.csv', index=False)
 
     
 if __name__=="__main__":
     
-    # nfeatures(features=3)
-    maths_magic(digits=5)
+    nfeatures(features=3)
