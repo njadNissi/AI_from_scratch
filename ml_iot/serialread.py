@@ -1,5 +1,6 @@
 import serial, sys
 
+# on windows it looks like COM<number>, on linux ttyUSB<number> or ttyACM<number>
 port = 'COM4'
 br =  9600
 

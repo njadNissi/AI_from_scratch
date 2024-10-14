@@ -30,11 +30,13 @@ TinyML is a subfield of machine learning that focuses on developing machine lear
 
 Examples:
 
-![Picture1](https://github.com/user-attachments/assets/a44434f8-d575-413b-aec3-c1d25c94144a)
+![Picture1](./results/ImageRecognition.png)
 
-![Picture2](https://github.com/user-attachments/assets/03a9693e-347d-479c-bef7-5564a55e6322)
+![Picture2](./results/AIHeartReader.png)
 
-![Picture3](https://github.com/user-attachments/assets/f680733f-6b32-4376-ac45-f4966a5dd574)
+![Picture3](./results/SmartHome.png)
+
+![Picture4](./results/IrisClassifier.png)
 
 
 ### 2. The Role of Machine Learning in Edge, IoT, and TinyML

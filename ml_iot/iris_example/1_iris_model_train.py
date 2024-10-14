@@ -15,7 +15,7 @@ labels = ["Iris Setosa", "Iris Versicolor", "Iris Virginica"]
     (you will use this name later)
 '''
 def generate_hfile():
-  with open('IrisClassifier.h', 'w') as f:
+  with open('artifacts/IrisClassifier.h', 'w') as f:
     f.write(clf.to_arduino(instance_name='irisClassifier'))
     
 
