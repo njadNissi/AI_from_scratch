@@ -3,7 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-MAX_ITER = 1000
+EPOCHS = 1000
 
 def y_fnc(x):
     return x**2
@@ -20,7 +20,7 @@ curr_pos = (80, y_fnc(80))
 learning_rate = .01
 
 
-for _ in range(MAX_ITER):
+for _ in range(EPOCHS):
 	plt.clf() # clear figure
 	new_x = curr_pos[0] - learning_rate * der_y(curr_pos[0])
 	new_y = y_fnc(new_x)

@@ -1,0 +1,72 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/njadpi/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/njadpi/.arduino15/packages/arduino/hardware/avr/1.8.6/variants/mega"
+  },
+  {
+    "Sourcefile": "/home/njadpi/Desktop/IR_remote_rcv/bin/sketch/IR_remote_rcv.ino.cpp",
+    "Include": "IRremote.h",
+    "Includepath": "/home/njadpi/Arduino/libraries/IRremote/src"
+  },
+  {
+    "Sourcefile": "/home/njadpi/Desktop/IR_remote_rcv/bin/sketch/IR_remote_rcv.ino.cpp",
+    "Include": "Servo.h",
+    "Includepath": "/home/njadpi/Arduino/libraries/Servo/src"
+  },
+  {
+    "Sourcefile": "/home/njadpi/Desktop/IR_remote_rcv/bin/sketch/IR_remote_rcv.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/avr/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/mbed/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/megaavr/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/nrf52/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/renesas/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/sam/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/samd/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/stm32f4/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/njadpi/Arduino/libraries/Servo/src/xmc/Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]

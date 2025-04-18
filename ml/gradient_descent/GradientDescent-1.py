@@ -25,7 +25,7 @@ for _ in range(n_iters):
   dx1, dx2 = gradient(cp[0], cp[1])
   x1_new, x2_new = cp[0] - lr * dx1, cp[1] - lr * dx2
   cp = x1_new, x2_new, fx(x1_new, x2_new)
-
+  print(cp)
   ax.plot_surface(X1, X2, Y, cmap="viridis", zorder=0) # plot current vals
   ax.scatter(cp[0], cp[1], cp[2], color='magenta', zorder=1)
   plt.pause(.001)

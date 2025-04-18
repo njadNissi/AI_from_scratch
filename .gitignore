@@ -1,2 +1,7 @@
 **/venv/
 **/*.ipynb
+**/*.h5
+**/*.keras
+**/*.pt
+**/*.weights
+**/*.pkl

@@ -1,0 +1,9 @@
+{
+  "additionalFiles": "",
+  "compiler.optimization_flags": "",
+  "customBuildProperties": "build.warn_data_percentage=75",
+  "fqbn": "arduino:avr:mega",
+  "hardwareFolders": "/home/njadpi/.arduino15/packages",
+  "otherLibrariesFolders": "/home/njadpi/Arduino/libraries",
+  "sketchLocation": "/home/njadpi/Desktop/IR_remote_rcv"
+}
