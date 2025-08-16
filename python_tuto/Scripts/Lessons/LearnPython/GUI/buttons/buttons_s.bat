@@ -1,0 +1,1 @@
+"E:\Python\Python39\pythonw.exe" "E:\Python\py\gui\buttons.py"
