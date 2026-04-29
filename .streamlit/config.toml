@@ -1,0 +1,4 @@
+[server]
+runOnSave = true
+# This prevents Streamlit from crashing when many files change in artifacts
+folderWatchBlacklist = ["**/artifacts/**"]

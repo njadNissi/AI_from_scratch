@@ -1,3 +1,5 @@
+artifacts/
+**/artifacts/*
 **/venv/
 **/*.ipynb
 **/*.h5
@@ -5,3 +7,4 @@
 **/*.pt
 **/*.weights
 **/*.pkl
+packages.txt

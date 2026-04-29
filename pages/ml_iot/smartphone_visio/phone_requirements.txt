@@ -1,0 +1,8 @@
+streamlit==1.35.0
+flask==2.3.3
+flask-socketio==5.3.6
+geopy==2.4.1  # For location details
+plotly==5.22.0  # For gyroscope graphs
+folium==0.16.0  # For maps
+streamlit-folium==0.21.0  # Embed folium maps in Streamlit
+eventlet==0.35.1  # WebSocket server
